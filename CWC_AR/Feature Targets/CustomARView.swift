@@ -161,17 +161,17 @@ class CustomARView: ARView {
             var translation = SIMD3<Float>()
             switch direction {
             case .forward:
-                translation.z -= 0.1
+                translation.z -= 0.01
             case .backward:
-                translation.z += 0.1
+                translation.z += 0.01
             case .left:
-                translation.x -= 0.1
+                translation.x -= 0.01
             case .right:
-                translation.x += 0.1
+                translation.x += 0.01
             case .up:
-                translation.y += 0.1
+                translation.y += 0.01
             case .down:
-                translation.y -= 0.1
+                translation.y -= 0.01
             case .stay:
                 break
             }

@@ -19,7 +19,6 @@
 		A7DA23142BD9F3B000C234BE /* plane.usdz in Resources */ = {isa = PBXBuildFile; fileRef = A7DA23122BD9F3B000C234BE /* plane.usdz */; };
 		A7DA23192BDAB67300C234BE /* RidikulusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DA23182BDAB67300C234BE /* RidikulusView.swift */; };
 		A7DA231B2BDAB79300C234BE /* LeviosaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DA231A2BDAB79300C234BE /* LeviosaView.swift */; };
-		A7DA231D2BDABBE500C234BE /* ArrowButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DA231C2BDABBE500C234BE /* ArrowButton.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,7 +35,6 @@
 		A7DA23122BD9F3B000C234BE /* plane.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = plane.usdz; sourceTree = "<group>"; };
 		A7DA23182BDAB67300C234BE /* RidikulusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RidikulusView.swift; sourceTree = "<group>"; };
 		A7DA231A2BDAB79300C234BE /* LeviosaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeviosaView.swift; sourceTree = "<group>"; };
-		A7DA231C2BDABBE500C234BE /* ArrowButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrowButton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -92,7 +90,6 @@
 			children = (
 				A7DA22FC2BD91B6500C234BE /* ContentView.swift */,
 				A7DA231A2BDAB79300C234BE /* LeviosaView.swift */,
-				A7DA231C2BDABBE500C234BE /* ArrowButton.swift */,
 				A7DA23092BD91BD500C234BE /* CustomARView.swift */,
 				A7DA230B2BD91CD700C234BE /* CustomARViewRepresentable.swift */,
 				A7DA230F2BD9594900C234BE /* ARManager.swift */,
@@ -189,7 +186,6 @@
 				A7DA230A2BD91BD500C234BE /* CustomARView.swift in Sources */,
 				A7DA22FB2BD91B6500C234BE /* CWC_ARApp.swift in Sources */,
 				A7DA23102BD9594900C234BE /* ARManager.swift in Sources */,
-				A7DA231D2BDABBE500C234BE /* ArrowButton.swift in Sources */,
 				A7DA230C2BD91CD700C234BE /* CustomARViewRepresentable.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

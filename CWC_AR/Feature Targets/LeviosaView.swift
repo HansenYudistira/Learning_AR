@@ -86,7 +86,7 @@ struct LeviosaView: View {
                 case "start":
                     ARManager.shared.actionStream.send(.placeBlock(color: .blue))
                     break
-                case "wingradium leviosa":
+                case "wingradium leviosa", "wingradium leviosa!":
                     let items = ["plane", "drummer", "plane", "drummer"]
                     let randomNumber = Int(arc4random_uniform(UInt32(items.count)))
                     let randomItem = items[randomNumber]

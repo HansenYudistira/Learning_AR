@@ -73,8 +73,8 @@ struct RidikulusView: View {
                 case "start":
                     ARManager.shared.actionStream.send(.placeBlock(color: .blue))
                     break
-                case "ridikulus":
-                    let items = ["plane", "drummer", "plane", "drummer"]
+                case "ridikulus", "ridiculous":
+                    let items = ["plane", "drummer"]
                     let randomNumber = Int(arc4random_uniform(UInt32(items.count)))
                     let randomItem = items[randomNumber]
                     ARManager.shared.actionStream.send(.placeItem(item: randomItem))
