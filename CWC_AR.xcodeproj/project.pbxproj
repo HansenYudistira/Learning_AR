@@ -19,6 +19,9 @@
 		A7DA23142BD9F3B000C234BE /* plane.usdz in Resources */ = {isa = PBXBuildFile; fileRef = A7DA23122BD9F3B000C234BE /* plane.usdz */; };
 		A7DA23192BDAB67300C234BE /* RidikulusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DA23182BDAB67300C234BE /* RidikulusView.swift */; };
 		A7DA231B2BDAB79300C234BE /* LeviosaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DA231A2BDAB79300C234BE /* LeviosaView.swift */; };
+		BFC3DA4F2BDBEE8D0090B36F /* SpeechToText.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC3DA4E2BDBEE8D0090B36F /* SpeechToText.swift */; };
+		BFC3DA522BDBEECA0090B36F /* SpellCastButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC3DA512BDBEECA0090B36F /* SpellCastButton.swift */; };
+		BFC3DA552BDBEF140090B36F /* ModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC3DA542BDBEF140090B36F /* ModalView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,6 +38,9 @@
 		A7DA23122BD9F3B000C234BE /* plane.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = plane.usdz; sourceTree = "<group>"; };
 		A7DA23182BDAB67300C234BE /* RidikulusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RidikulusView.swift; sourceTree = "<group>"; };
 		A7DA231A2BDAB79300C234BE /* LeviosaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeviosaView.swift; sourceTree = "<group>"; };
+		BFC3DA4E2BDBEE8D0090B36F /* SpeechToText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechToText.swift; sourceTree = "<group>"; };
+		BFC3DA512BDBEECA0090B36F /* SpellCastButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpellCastButton.swift; sourceTree = "<group>"; };
+		BFC3DA542BDBEF140090B36F /* ModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,6 +74,8 @@
 		A7DA22F92BD91B6500C234BE /* CWC_AR */ = {
 			isa = PBXGroup;
 			children = (
+				BFC3DA502BDBEEB90090B36F /* Components */,
+				BFC3DA4D2BDBEE5C0090B36F /* Utils */,
 				A7DA23152BD9F3B700C234BE /* USDZ file */,
 				A7DA23082BD91B9C00C234BE /* Feature Targets */,
 				A7DA22FA2BD91B6500C234BE /* CWC_ARApp.swift */,
@@ -105,6 +113,23 @@
 				A7DA23112BD9F3B000C234BE /* drummer.usdz */,
 			);
 			path = "USDZ file";
+			sourceTree = "<group>";
+		};
+		BFC3DA4D2BDBEE5C0090B36F /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				BFC3DA4E2BDBEE8D0090B36F /* SpeechToText.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		BFC3DA502BDBEEB90090B36F /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				BFC3DA512BDBEECA0090B36F /* SpellCastButton.swift */,
+				BFC3DA542BDBEF140090B36F /* ModalView.swift */,
+			);
+			path = Components;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -179,12 +204,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BFC3DA552BDBEF140090B36F /* ModalView.swift in Sources */,
 				A7DA230E2BD9590900C234BE /* ARAction.swift in Sources */,
 				A7DA22FD2BD91B6500C234BE /* ContentView.swift in Sources */,
 				A7DA231B2BDAB79300C234BE /* LeviosaView.swift in Sources */,
+				BFC3DA4F2BDBEE8D0090B36F /* SpeechToText.swift in Sources */,
 				A7DA23192BDAB67300C234BE /* RidikulusView.swift in Sources */,
 				A7DA230A2BD91BD500C234BE /* CustomARView.swift in Sources */,
 				A7DA22FB2BD91B6500C234BE /* CWC_ARApp.swift in Sources */,
+				BFC3DA522BDBEECA0090B36F /* SpellCastButton.swift in Sources */,
 				A7DA23102BD9594900C234BE /* ARManager.swift in Sources */,
 				A7DA230C2BD91CD700C234BE /* CustomARViewRepresentable.swift in Sources */,
 			);
@@ -320,10 +348,12 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"CWC_AR/Preview Content\"";
-				DEVELOPMENT_TEAM = HQNZ8TWNYS;
+				DEVELOPMENT_TEAM = 7DK5H7RWQJ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Our App required camera to use it.";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Application need permission to microphone";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Application need permission to speech recognition";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -351,10 +381,12 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"CWC_AR/Preview Content\"";
-				DEVELOPMENT_TEAM = HQNZ8TWNYS;
+				DEVELOPMENT_TEAM = 7DK5H7RWQJ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Our App required camera to use it.";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Application need permission to microphone";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Application need permission to speech recognition";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
