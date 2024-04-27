@@ -10,13 +10,7 @@ import RealityKit
 import ARKit
 
 enum SpeechAction{
-    case none, remove, plane, drummer, ridikulus
-    
-    //    var action: String{
-    //        switch self{
-    //        case .remove
-    //        }
-    //    }
+    case none, remove, plane, drummer, ridikulus, leviosa
 }
 
 struct ContentView: View {
@@ -28,6 +22,7 @@ struct ContentView: View {
     
     @State private var speechText: String = ""
     @State private var speechAction: SpeechAction = .none
+    @State private var isDragable: Bool = false
     
     var body: some View {
         CustomARViewRepresentable()
@@ -35,15 +30,18 @@ struct ContentView: View {
             .overlay {
                 ZStack{
                     Rectangle()
-                        .opacity(0)
-                        .frame(width: .infinity, height: .infinity)
-                        .gesture(
-                            DragGesture()
-                                .onChanged{ drag in
-//                                    position = drag.location
-                                    print(drag.translation)
-                                    print(drag.location)
-                                }
+                        .foregroundColor(.clear)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .contentShape(Rectangle())
+                        .gesture( isDragable ?
+                                  DragGesture()
+                            .onChanged { drag in
+                                print("Gesture onChanged")
+                                print("Translation: \(drag.translation)")
+                                print("Location: \(drag.location)")
+                                ARManager.shared.actionStream.send(.translateItem(translation: drag.translation))
+                            }
+                                  : nil
                         )
                     VStack{
                         Spacer()
@@ -75,6 +73,9 @@ struct ContentView: View {
                     ARManager.shared.actionStream.send(.placeItem(item: randomItem))
                     speechAction = .none
                     print("Ridukulus spell casted")
+                } else if newValue == .leviosa{
+                    speechAction = .none
+                    isDragable = true
                 }
             }
     }

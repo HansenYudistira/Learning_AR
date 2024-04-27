@@ -55,4 +55,5 @@ enum ARAction {
     case moveItem(direction: Direction) 
     case startApplyingForce(direction: Direction)
     case stopApplyingForce
+    case translateItem(translation: CGSize)
 }
