@@ -40,9 +40,10 @@ struct ModalView: View {
                 speechAction = .plane
             } else if speechText == "Drummer"{
                 speechAction = .drummer
-            }
-            else if speechText == "Ridiculous" || speechText == "Ridikulus" {
+            } else if speechText == "Ridiculous" || speechText == "Ridikulus" {
                 speechAction = .ridikulus
+            } else if speechText == "Wingardium Leviosa!"{
+                speechAction = .leviosa
             }
         }
     }
