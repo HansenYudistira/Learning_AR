@@ -53,7 +53,7 @@ enum Direction {
 }
 
 enum ARAction {
-    case placeBlock(color: Color)
+    case placeBall
     case removeAllAnchors
     case placeItem(item: String)
     case moveItem(direction: Direction) 

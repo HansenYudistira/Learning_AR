@@ -71,7 +71,7 @@ struct RidikulusView: View {
                 
                 switch lowercasetext {
                 case "start":
-                    ARManager.shared.actionStream.send(.placeBlock(color: .blue))
+                    ARManager.shared.actionStream.send(.placeBall)
                     break
                 case "ridikulus", "ridiculous":
                     let items = ["plane", "drummer"]

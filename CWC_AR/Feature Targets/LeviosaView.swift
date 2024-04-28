@@ -84,7 +84,7 @@ struct LeviosaView: View {
                 
                 switch lowercasetext {
                 case "start":
-                    ARManager.shared.actionStream.send(.placeBlock(color: .blue))
+                    ARManager.shared.actionStream.send(.placeBall)
                     break
                 case "wingradium leviosa", "wingradium leviosa!":
                     let items = ["plane", "drummer", "plane", "drummer"]

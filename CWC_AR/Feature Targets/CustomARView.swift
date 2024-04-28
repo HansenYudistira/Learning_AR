@@ -12,7 +12,6 @@ import Combine
 
 
 class CustomARView: ARView {
-    //    var placedEntities: [String: Entity] = [:]
     var placedItem: Entity?
     
     required init(frame frameRect: CGRect) {
@@ -21,6 +20,10 @@ class CustomARView: ARView {
     
     func startApplyingForce(direction: Direction) {
         moveItem(direction: direction)
+    }
+    
+    func stopApplyingForce() {
+        moveItem(direction: .stay)
     }
     
     func dragItem(translation: CGSize) {
@@ -47,10 +50,6 @@ class CustomARView: ARView {
         placedItem?.transform.translation.z += Float(zTranslation)
     }
     
-    func stopApplyingForce() {
-        moveItem(direction: .stay)
-    }
-    
     dynamic required init?(coder decoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -67,8 +66,8 @@ class CustomARView: ARView {
         ARManager.shared.actionStream
             .sink { [weak self] action in
                 switch action {
-                case .placeBlock(let color):
-                    self?.placeBlock(ofColor: color)
+                case .placeBall:
+                    self?.placeBall()
                 case .removeAllAnchors:
                     self?.scene.anchors.removeAll()
                     self?.placedItem = nil
@@ -138,22 +137,38 @@ class CustomARView: ARView {
         anchor.addChild(entity)
     }
     
-    func placeBlock(ofColor color: Color) {
-        scene.anchors.removeAll()
-        placedItem = nil
-        
-        let block = MeshResource.generateBox(size: 0.1)
-        let material = SimpleMaterial(color: UIColor(color), isMetallic: true)
-        let entity = ModelEntity(mesh: block, materials: [material])
-        
-        //        let anchor = AnchorEntity(world: SIMD3<Float>(x:0, y: 0, z: 0))
-        //        anchor.addChild(entity)
-        
-        let planeAnchor = AnchorEntity(.plane(.horizontal, classification: .any, minimumBounds: [0.5, 0.5]))
-        planeAnchor.addChild(entity)
-        
-        scene.addAnchor(planeAnchor)
-        placedItem = entity
+    func placeBall() {
+        if let existingEntity = placedItem {
+            guard let existingAnchor = existingEntity.anchor else { return }
+            existingAnchor.removeChild(placedItem!)
+            
+            let material = SimpleMaterial(color: .blue, isMetallic: true)
+            let mesh = MeshResource.generateSphere(radius: 0.1)
+            let entity = ModelEntity(mesh: mesh, materials: [material])
+            entity.generateCollisionShapes(recursive: true)
+            // Membuat komponen fisik
+            entity.physicsBody = PhysicsBodyComponent(massProperties: .default,
+                                                      material: .default,
+                                                        mode: .dynamic)
+            placedItem = entity
+            // Add the new entity to the same anchor as the existing one
+            existingAnchor.addChild(placedItem!)
+        } else {
+            let material = SimpleMaterial(color: .blue, isMetallic: true)
+            let mesh = MeshResource.generateSphere(radius: 0.1)
+            let entity = ModelEntity(mesh: mesh, materials: [material])
+            entity.generateCollisionShapes(recursive: true)
+            // Membuat komponen fisik
+            entity.physicsBody = PhysicsBodyComponent(massProperties: .default,
+                                                      material: .default,
+                                                        mode: .dynamic)
+            
+            placedItem = entity
+            
+            let planeAnchor = AnchorEntity(.plane(.horizontal, classification: .any, minimumBounds: .zero))
+            planeAnchor.addChild(placedItem!)
+            scene.addAnchor(planeAnchor)
+        }
     }
     
     func placeItem(item: String) {
@@ -163,8 +178,8 @@ class CustomARView: ARView {
                 // If there's no anchor for the existing item (unlikely scenario), return
                 return
             }
-            existingAnchor.removeChild(existingEntity)
-            // Load the new entity
+            existingAnchor.removeChild(placedItem!)
+            
             guard let entity = try? ModelEntity.load(named: item) else { return }
             
             // Add the new entity to the same anchor as the existing one
@@ -173,14 +188,11 @@ class CustomARView: ARView {
             // Update the reference to the placed item
             placedItem = entity
         } else {
-            // If there's no existing entity, place the new item normally
-            guard let url = Bundle.main.url(forResource: item, withExtension: "usdz"),
-            let entity = try? Entity.load(contentsOf: url) else { return }
+            guard let entity = try? Entity.load(named: item) else { return }
             let planeAnchor = AnchorEntity(.plane(.horizontal, classification: .any, minimumBounds: [0.5, 0.5]))
             planeAnchor.addChild(entity)
             scene.addAnchor(planeAnchor)
             
-            // Update the reference to the placed item
             placedItem = entity
         }
     }
