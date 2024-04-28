@@ -31,8 +31,20 @@ class CustomARView: ARView {
             z: 0
         )
         
-        
         placedItem?.transform.translation += translationVector
+    }
+    
+    func pinchItem(magnitude: CGFloat) {
+        guard let _ = placedItem else { return }
+        var zTranslation: CGFloat
+        if magnitude > 1 {
+            zTranslation = -magnitude * 0.01
+        } else if magnitude < 1 {
+            zTranslation = (1 - magnitude) * 0.1
+        } else {
+            return
+        }
+        placedItem?.transform.translation.z += Float(zTranslation)
     }
     
     func stopApplyingForce() {
@@ -59,6 +71,7 @@ class CustomARView: ARView {
                     self?.placeBlock(ofColor: color)
                 case .removeAllAnchors:
                     self?.scene.anchors.removeAll()
+                    self?.placedItem = nil
                 case .placeItem(item: let item):
                     self?.placeItem(item: item)
                 case .moveItem(direction: let direction):
@@ -69,7 +82,8 @@ class CustomARView: ARView {
                     self?.stopApplyingForce()
                 case .translateItem(translation: let translation):
                     self?.dragItem(translation: translation)
-                    
+                case .pinchItem(magnitude: let magnitude):
+                    self?.pinchItem(magnitude: magnitude)
                 }
             }
             .store(in: &cancellables)
@@ -160,7 +174,8 @@ class CustomARView: ARView {
             placedItem = entity
         } else {
             // If there's no existing entity, place the new item normally
-            guard let entity = try? ModelEntity.load(named: item) else { return }
+            guard let url = Bundle.main.url(forResource: item, withExtension: "usdz"),
+            let entity = try? Entity.load(contentsOf: url) else { return }
             let planeAnchor = AnchorEntity(.plane(.horizontal, classification: .any, minimumBounds: [0.5, 0.5]))
             planeAnchor.addChild(entity)
             scene.addAnchor(planeAnchor)
@@ -193,5 +208,29 @@ class CustomARView: ARView {
         
         placedItem?.transform.translation += translation
     }
-    
 }
+
+//struct EntityComponent: Component {
+//    static let query = EntityQuery(where: .has(EntityComponent.self))
+//    
+//    var direction: Direction?
+//}
+//
+//class PhysicSystem: System {
+//    required init(scene: RealityKit.Scene) { }
+//    
+//    func update(context: SceneUpdateContext) {
+//        if let entity = context.scene.performQuery(EntityComponent.query).first {
+//            move(entity: entity)
+//        }
+//    }
+//    
+//    private func move(entity: Entity) {
+//        guard let entityState = entity.components[EntityComponent.self],
+//              let physicBody = entity as? HasPhysicsBody else { return }
+//        
+//        if let direction = entityState.direction?.vector {
+//            physicBody.applyLinearImpulse(direction, relativeTo: nil)
+//        }
+//    }
+//}

@@ -8,6 +8,10 @@
 import SwiftUI
 import ARKit
 
+enum SpeechAction {
+    case none, remove, plane, drummer, start, ridikulus, leviosa
+}
+
 enum Direction {
     case forward, backward, left, right, up, down, stay
     
@@ -56,4 +60,5 @@ enum ARAction {
     case startApplyingForce(direction: Direction)
     case stopApplyingForce
     case translateItem(translation: CGSize)
+    case pinchItem(magnitude: CGFloat)
 }

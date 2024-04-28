@@ -9,10 +9,6 @@ import SwiftUI
 import RealityKit
 import ARKit
 
-enum SpeechAction{
-    case none, remove, plane, drummer, ridikulus, leviosa
-}
-
 struct ContentView: View {
     //    @StateObject var customARView = CustomARView()
     @State private var showError = false
@@ -43,6 +39,16 @@ struct ContentView: View {
                             }
                                   : nil
                         )
+                        .gesture( isDragable ?
+                                  MagnificationGesture()
+                            .onChanged { pinch in
+                                print("Magnification gesture onChanged")
+                                print("Magnitude: \(pinch.magnitude)")
+                                ARManager.shared.actionStream.send(
+                                    .pinchItem(magnitude: pinch.magnitude))
+                            }
+                                  : nil
+                        )
                     VStack{
                         Spacer()
                         HStack (alignment:.bottom){
@@ -66,6 +72,10 @@ struct ContentView: View {
                     ARManager.shared.actionStream.send(.placeItem(item: "drummer"))
                     speechAction = .none
                     print("Drummer Added")
+                } else if newValue == .start{
+                    ARManager.shared.actionStream.send(.placeItem(item: "feather"))
+                    speechAction = .none
+                    print("Feather Added")
                 } else if newValue == .ridikulus{
                     let items = ["plane", "drummer"]
                     let randomNumber = Int(arc4random_uniform(UInt32(items.count)))

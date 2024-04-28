@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A76A457E2BDE0DFC004FC882 /* feather.usda in Resources */ = {isa = PBXBuildFile; fileRef = A76A457D2BDE0DFC004FC882 /* feather.usda */; };
 		A7DA22FB2BD91B6500C234BE /* CWC_ARApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DA22FA2BD91B6500C234BE /* CWC_ARApp.swift */; };
 		A7DA22FD2BD91B6500C234BE /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DA22FC2BD91B6500C234BE /* ContentView.swift */; };
 		A7DA22FF2BD91B6600C234BE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A7DA22FE2BD91B6600C234BE /* Assets.xcassets */; };
@@ -25,6 +26,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A76A457D2BDE0DFC004FC882 /* feather.usda */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = feather.usda; sourceTree = "<group>"; };
 		A7DA22F72BD91B6500C234BE /* CWC_AR.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CWC_AR.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A7DA22FA2BD91B6500C234BE /* CWC_ARApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CWC_ARApp.swift; sourceTree = "<group>"; };
 		A7DA22FC2BD91B6500C234BE /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -76,7 +78,7 @@
 			children = (
 				BFC3DA502BDBEEB90090B36F /* Components */,
 				BFC3DA4D2BDBEE5C0090B36F /* Utils */,
-				A7DA23152BD9F3B700C234BE /* USDZ file */,
+				A7DA23152BD9F3B700C234BE /* USDZfile */,
 				A7DA23082BD91B9C00C234BE /* Feature Targets */,
 				A7DA22FA2BD91B6500C234BE /* CWC_ARApp.swift */,
 				A7DA22FE2BD91B6600C234BE /* Assets.xcassets */,
@@ -106,13 +108,14 @@
 			path = "Feature Targets";
 			sourceTree = "<group>";
 		};
-		A7DA23152BD9F3B700C234BE /* USDZ file */ = {
+		A7DA23152BD9F3B700C234BE /* USDZfile */ = {
 			isa = PBXGroup;
 			children = (
+				A76A457D2BDE0DFC004FC882 /* feather.usda */,
 				A7DA23122BD9F3B000C234BE /* plane.usdz */,
 				A7DA23112BD9F3B000C234BE /* drummer.usdz */,
 			);
-			path = "USDZ file";
+			path = USDZfile;
 			sourceTree = "<group>";
 		};
 		BFC3DA4D2BDBEE5C0090B36F /* Utils */ = {
@@ -191,6 +194,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A7DA23142BD9F3B000C234BE /* plane.usdz in Resources */,
+				A76A457E2BDE0DFC004FC882 /* feather.usda in Resources */,
 				A7DA23022BD91B6600C234BE /* Preview Assets.xcassets in Resources */,
 				A7DA22FF2BD91B6600C234BE /* Assets.xcassets in Resources */,
 				A7DA23132BD9F3B000C234BE /* drummer.usdz in Resources */,
@@ -348,7 +352,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"CWC_AR/Preview Content\"";
-				DEVELOPMENT_TEAM = 7DK5H7RWQJ;
+				DEVELOPMENT_TEAM = HQNZ8TWNYS;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Our App required camera to use it.";
@@ -381,7 +385,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"CWC_AR/Preview Content\"";
-				DEVELOPMENT_TEAM = 7DK5H7RWQJ;
+				DEVELOPMENT_TEAM = HQNZ8TWNYS;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Our App required camera to use it.";
