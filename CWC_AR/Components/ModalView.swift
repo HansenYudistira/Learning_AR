@@ -33,19 +33,25 @@ struct ModalView: View {
         .onDisappear{
             color = .gray
             speechRecognizer.stopTranscribing()
-            speechText = speechRecognizer.transcript
-            if speechText == "Reset" {
+            speechText = speechRecognizer.transcript.lowercased()
+            if speechText == "reset" {
                 speechAction = .remove
-            } else if speechText == "Plane"{
+            } else if speechText == "plane" {
                 speechAction = .plane
-            } else if speechText == "Drummer"{
+            } else if speechText == "drummer" {
                 speechAction = .drummer
-            } else if speechText == "Start"{
+            } else if speechText == "start" {
                 speechAction = .start
-            } else if speechText == "Ridiculous" || speechText == "Ridikulus" {
+            } else if speechText == "ridiculous" || speechText == "ridikulus" {
                 speechAction = .ridikulus
-            } else if speechText == "Wingardium Leviosa!"{
+            } else if speechText == "wingardium leviosa!" {
                 speechAction = .leviosa
+            } else if speechText == "lumos" {
+                speechAction = .lumos
+            } else if speechText == "lumos maxima" {
+                speechAction = .lumosmaxima
+            } else if speechText == "nox" || speechText == "knox"{
+                speechAction = .nox
             }
         }
     }
