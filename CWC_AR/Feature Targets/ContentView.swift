@@ -21,7 +21,7 @@ struct ContentView: View {
     @State private var speechAction: SpeechAction = .none
     @State private var isDragable: Bool = false
     @State private var layerColor: Color = .black
-        
+    
     func toggleFlashLight(on: Bool) {
         guard let device = AVCaptureDevice.default(for: .video) else { return }
         if device.hasTorch {
@@ -95,7 +95,7 @@ struct ContentView: View {
                     ARManager.shared.actionStream.send(.placeBall)
                     speechAction = .none
                     print("Feather Added")
-                } else if newValue == .ridikulus{
+                } else if newValue == .ridikulus {
                     let items = ["plane", "drummer", "gramopphone", "toy_car"]
                     let randomNumber = Int(arc4random_uniform(UInt32(items.count)))
                     let randomItem = items[randomNumber]

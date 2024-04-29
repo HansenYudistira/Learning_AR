@@ -11,8 +11,14 @@ import SwiftUI
 import Combine
 
 
+
 class CustomARView: ARView, ARSessionDelegate {
     var placedItem: Entity?
+    var meshAnchorTracker: MeshAnchorTracker?
+
+    var postProcessing: PostProcessing?
+    
+    var arView: ARView { return self }
     
     required init(frame frameRect: CGRect) {
         super.init(frame: frameRect)
@@ -91,6 +97,30 @@ class CustomARView: ARView, ARSessionDelegate {
             }
             .store(in: &cancellables)
     }
+    
+    private func configureWorldTracking() {
+        let configuration = ARWorldTrackingConfiguration()
+
+        let sceneReconstruction: ARWorldTrackingConfiguration.SceneReconstruction = .mesh
+        if ARWorldTrackingConfiguration.supportsSceneReconstruction(sceneReconstruction) {
+            configuration.sceneReconstruction = sceneReconstruction
+            meshAnchorTracker = .init(arView: self)
+        }
+
+        let frameSemantics: ARConfiguration.FrameSemantics = [.smoothedSceneDepth, .sceneDepth]
+        if ARWorldTrackingConfiguration.supportsFrameSemantics(frameSemantics) {
+            configuration.frameSemantics.insert(frameSemantics)
+            postProcessing = .init(arView: self)
+        }
+
+        configuration.planeDetection.insert(.horizontal)
+        session.run(configuration)
+        defer { session.delegate = self }
+
+        arView.renderOptions.insert(.disableMotionBlur)
+        arView.environment.sceneUnderstanding.options.insert([.collision, .physics, .receivesLighting, .occlusion])
+    }
+
     
     func configurationExamples() {
         // Track the device relative to it's environment
@@ -185,14 +215,16 @@ class CustomARView: ARView, ARSessionDelegate {
             existingAnchor.removeChild(placedItem!)
             
             guard let entity = try? ModelEntity.load(named: item) else { return }
-            
+            entity.generateCollisionShapes(recursive: true)
             // Add the new entity to the same anchor as the existing one
             existingAnchor.addChild(entity)
             
             // Update the reference to the placed item
             placedItem = entity
         } else {
+            
             guard let entity = try? ModelEntity.load(named: item) else { return }
+            entity.generateCollisionShapes(recursive: true)
             let planeAnchor = AnchorEntity(.plane(.horizontal, classification: .any, minimumBounds: .zero))
             planeAnchor.addChild(entity)
             scene.addAnchor(planeAnchor)
