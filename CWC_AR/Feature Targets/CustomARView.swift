@@ -11,11 +11,15 @@ import SwiftUI
 import Combine
 
 
-class CustomARView: ARView {
+class CustomARView: ARView, ARSessionDelegate {
     var placedItem: Entity?
     
     required init(frame frameRect: CGRect) {
         super.init(frame: frameRect)
+    }
+    
+    func setup() {
+        MetalLibLoader.initializeMetal()
     }
     
     func startApplyingForce(direction: Direction) {
@@ -188,8 +192,8 @@ class CustomARView: ARView {
             // Update the reference to the placed item
             placedItem = entity
         } else {
-            guard let entity = try? Entity.load(named: item) else { return }
-            let planeAnchor = AnchorEntity(.plane(.horizontal, classification: .any, minimumBounds: [0.5, 0.5]))
+            guard let entity = try? ModelEntity.load(named: item) else { return }
+            let planeAnchor = AnchorEntity(.plane(.horizontal, classification: .any, minimumBounds: .zero))
             planeAnchor.addChild(entity)
             scene.addAnchor(planeAnchor)
             
