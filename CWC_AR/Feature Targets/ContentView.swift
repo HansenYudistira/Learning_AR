@@ -8,6 +8,7 @@
 import SwiftUI
 import RealityKit
 import ARKit
+import AVFoundation
 
 struct ContentView: View {
     //    @StateObject var customARView = CustomARView()
@@ -19,6 +20,23 @@ struct ContentView: View {
     @State private var speechText: String = ""
     @State private var speechAction: SpeechAction = .none
     @State private var isDragable: Bool = false
+    @State private var layerColor: Color = .black
+        
+    func toggleFlashLight(on: Bool) {
+        guard let device = AVCaptureDevice.default(for: .video) else { return }
+        if device.hasTorch {
+            do {
+                try device.lockForConfiguration()
+                if on {
+                    device.torchMode = .on
+                } else {
+                    device.torchMode = .off
+                }
+            } catch {
+                print("Toggle torch error")
+            }
+        }
+    }
     
     var body: some View {
         CustomARViewRepresentable()
@@ -26,7 +44,8 @@ struct ContentView: View {
             .overlay {
                 ZStack{
                     Rectangle()
-                        .foregroundColor(.clear)
+                        .edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
+                        .foregroundColor(layerColor)
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                         .contentShape(Rectangle())
                         .gesture( isDragable ?
@@ -83,9 +102,21 @@ struct ContentView: View {
                     ARManager.shared.actionStream.send(.placeItem(item: randomItem))
                     speechAction = .none
                     print("Ridukulus spell casted")
-                } else if newValue == .leviosa{
+                } else if newValue == .leviosa {
                     speechAction = .none
                     isDragable = true
+                } else if newValue == .lumos {
+                    layerColor = .clear
+                    print("Lumos spell casted")
+                    speechAction = .none
+                } else if newValue == .lumosmaxima {
+                    toggleFlashLight(on: true)
+                    print("Lumos Maxima spell casted")
+                    speechAction = .none
+                } else if newValue == .nox {
+                    toggleFlashLight(on: false)
+                    print("Nox spell casted")
+                    speechAction = .none
                 }
             }
     }

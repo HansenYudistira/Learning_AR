@@ -9,7 +9,7 @@ import SwiftUI
 import ARKit
 
 enum SpeechAction {
-    case none, remove, plane, drummer, start, ridikulus, leviosa
+    case none, remove, plane, drummer, start, ridikulus, leviosa, lumos, lumosmaxima, nox
 }
 
 enum Direction {
