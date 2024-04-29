@@ -26,6 +26,7 @@ public class SpeechRecognizer: ObservableObject {
     }
     
     @Published public var transcript: String = ""
+    @Published public var currentAudioLevel: Float = 0.0
     
     private var audioEngine: AVAudioEngine?
     private var request: SFSpeechAudioBufferRecognitionRequest?
@@ -77,7 +78,7 @@ public class SpeechRecognizer: ObservableObject {
                 }
                 
                 do {
-                    let (audioEngine, request) = try Self.prepareEngine()
+                    let (audioEngine, request) = try Self.prepareEngine(for: self)
                     self.audioEngine = audioEngine
                     self.request = request
                     
@@ -101,7 +102,7 @@ public class SpeechRecognizer: ObservableObject {
             }
         }
         
-        private static func prepareEngine() throws -> (AVAudioEngine, SFSpeechAudioBufferRecognitionRequest) {
+        private static func prepareEngine(for recognizer: SpeechRecognizer) throws -> (AVAudioEngine, SFSpeechAudioBufferRecognitionRequest) {
             let audioEngine = AVAudioEngine()
             
             let request = SFSpeechAudioBufferRecognitionRequest()
@@ -116,6 +117,11 @@ public class SpeechRecognizer: ObservableObject {
             inputNode.installTap(onBus: 0, bufferSize: 1024, format: recordingFormat) {
                 (buffer: AVAudioPCMBuffer, when: AVAudioTime) in
                 request.append(buffer)
+                let level = buffer.audioLevel()
+                DispatchQueue.main.async {
+                    // Use this level to update an observable property that your UI can bind to
+                    recognizer.currentAudioLevel = level  // Assume `currentAudioLevel` is a published property
+                }
             }
             audioEngine.prepare()
             try audioEngine.start()
@@ -159,5 +165,30 @@ extension AVAudioSession {
                 continuation.resume(returning: authorized)
             }
         }
+    }
+}
+
+import AVFoundation
+extension AVAudioPCMBuffer {
+    /// Calculates the normalized audio level of the buffer's first channel.
+    func audioLevel() -> Float {
+        guard let channelData = self.floatChannelData else {
+            return 0.0  // Return 0 if there is no audio data.
+        }
+        
+        let channelDataPointer = channelData.pointee
+        let frameLength = Int(self.frameLength)
+        let channelDataValues = Array(UnsafeBufferPointer(start: channelDataPointer, count: frameLength))
+        
+        // Calculate the root mean square (RMS) of the audio signal
+        let rms = sqrt(channelDataValues.map { $0 * $0 }.reduce(0, +) / Float(frameLength))
+        
+        // Convert RMS to a decibel (dB) value
+        let avgPower = 20 * log10(rms)
+        
+        // Normalize the dB value to a scale from 0 to 1
+        let meterLevel = max(0, avgPower + 80) / 80  // Assuming the range of -80 dB to 0 dB
+        
+        return meterLevel
     }
 }

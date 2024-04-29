@@ -380,7 +380,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"CWC_AR/Preview Content\"";
-				DEVELOPMENT_TEAM = 8FPJ93WVDR;
+				DEVELOPMENT_TEAM = 7DK5H7RWQJ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Our App required camera to use it.";
@@ -413,7 +413,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"CWC_AR/Preview Content\"";
-				DEVELOPMENT_TEAM = 8FPJ93WVDR;
+				DEVELOPMENT_TEAM = 7DK5H7RWQJ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Our App required camera to use it.";
