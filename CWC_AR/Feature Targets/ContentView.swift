@@ -21,7 +21,10 @@ struct ContentView: View {
     @State private var speechAction: SpeechAction = .none
     @State private var isDragable: Bool = false
     @State private var layerColor: Color = .black
-        
+    
+    @State private var player: AVAudioPlayer?
+    @State private var soundName: String = ""
+            
     func toggleFlashLight(on: Bool) {
         guard let device = AVCaptureDevice.default(for: .video) else { return }
         if device.hasTorch {
@@ -35,6 +38,18 @@ struct ContentView: View {
             } catch {
                 print("Toggle torch error")
             }
+        }
+    }
+    
+    func playSound(sound: String) {
+        guard let soundURL = Bundle.main.url(forResource: sound, withExtension: "mp3") else { print("Sound not found")
+            return
+        }
+        do {
+            player = try AVAudioPlayer(contentsOf: soundURL)
+            player?.play()
+        } catch {
+            print("Failed to load the sound: \(error)")
         }
     }
     
@@ -106,14 +121,18 @@ struct ContentView: View {
                     speechAction = .none
                     isDragable = true
                 } else if newValue == .lumos {
+                    playSound(sound: "lumos.mp3")
                     layerColor = .clear
                     print("Lumos spell casted")
                     speechAction = .none
                 } else if newValue == .lumosmaxima {
+                    playSound(sound: "lumos")
+                    layerColor = .clear
                     toggleFlashLight(on: true)
                     print("Lumos Maxima spell casted")
                     speechAction = .none
                 } else if newValue == .nox {
+                    playSound(sound: "lumos")
                     toggleFlashLight(on: false)
                     print("Nox spell casted")
                     speechAction = .none
