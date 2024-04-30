@@ -9,7 +9,31 @@ import ARKit
 import RealityKit
 import SwiftUI
 import Combine
+import CoreGraphics
 
+extension Entity {
+    func rotateAnimated(by rotation: simd_quatf, duration: TimeInterval) {
+        // Define the rotation transformation
+        let rotationTransform: Transform = Transform(rotation: rotation)
+        
+        // Animate the entity's rotation by applying the transformation over the specified duration
+        self.move(to: self.transform, relativeTo: self.parent)
+        self.move(to: rotationTransform, relativeTo: self.parent, duration: duration)
+    }
+}
+
+extension Entity {
+    
+    func scaleAnimated(with value: SIMD3<Float>, duration: CGFloat) {
+        
+        var scaleTransform: Transform = Transform()
+        scaleTransform.scale = value
+        self.move(to: self.transform, relativeTo: self.parent)
+        self.move(to: scaleTransform, relativeTo: self.parent, duration: duration)
+        
+    }
+    
+}
 
 
 class CustomARView: ARView, ARSessionDelegate {
@@ -209,9 +233,15 @@ class CustomARView: ARView, ARSessionDelegate {
     func placeItem(item: String) {
         if let existingEntity = placedItem {
             // Create a parent entity to hold both the existing and new entities
-                    let parentEntity = Entity()
-                    parentEntity.addChild(existingEntity)
-
+            var _: Transform = Transform()
+            if existingEntity.scale.x == 1.0 {
+                existingEntity.scaleAnimated(with: [0.1, 0.1, 0.1], duration: 1.0)
+            } else {
+                existingEntity.scaleAnimated(with: [1.0, 1.0, 1.0], duration: 1.0)
+            }
+                    
+            let parentEntity = Entity()
+            parentEntity.addChild(existingEntity)
 //                    let from = Transform.identity
 //                    let to = Transform(rotation: .init(angle: .pi * 2, axis: [0, 1, 0]))
 //                    let definition = FromToByAnimation(from: from,
@@ -226,28 +256,28 @@ class CustomARView: ARView, ARSessionDelegate {
 //                    placedItem?.playAnimation(rotationAnimation, transitionDuration: 0.5, startsPaused: false)
 
 //                    // Wait for 1 second before adding the new entity
-//                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [self] in
-                        // Remove the existing entity from its parent
-                        existingEntity.removeFromParent()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [self] in
+                // Remove the existing entity from its parent
+                existingEntity.removeFromParent()
 
-                        // Load the new entity
-                        guard let newEntity = try? ModelEntity.load(named: item) else {
-                            // Failed to load the new entity
-                            return
-                        }
+                // Load the new entity
+                guard let newEntity = try? ModelEntity.load(named: item) else {
+                    // Failed to load the new entity
+                    return
+                }
+                
+                // Generate collision shapes for the new entity
+                newEntity.generateCollisionShapes(recursive: true)
 
-                        // Generate collision shapes for the new entity
-                        newEntity.generateCollisionShapes(recursive: true)
+                // Add the new entity to the parent
+                parentEntity.addChild(newEntity)
 
-                        // Add the new entity to the parent
-                        parentEntity.addChild(newEntity)
-
-                        // Update the reference to the placed item
-                        placedItem = newEntity
-//                    }
-
-                    // Replace the existing entity with the parent entity in the anchor
-                    itemAnchor!.addChild(parentEntity)
+                // Update the reference to the placed item
+                placedItem = newEntity
+//                wandEntity.removeFromParent()
+            }
+            // Replace the existing entity with the parent entity in the anchor
+            itemAnchor!.addChild(parentEntity)
         } else {
             guard let entity = try? ModelEntity.load(named: item) else { return }
             entity.generateCollisionShapes(recursive: true)

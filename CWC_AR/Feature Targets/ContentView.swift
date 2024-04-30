@@ -96,7 +96,7 @@ struct ContentView: View {
                     speechAction = .none
                     print("Feather Added")
                 } else if newValue == .ridikulus {
-                    let items = ["plane", "drummer", "gramopphone", "toy_car"]
+                    let items = ["plane", "drummer", "gramophone", "toy_car"]
                     let randomNumber = Int(arc4random_uniform(UInt32(items.count)))
                     let randomItem = items[randomNumber]
                     ARManager.shared.actionStream.send(.placeItem(item: randomItem))

@@ -27,6 +27,8 @@
 		A7F126512BDF9A7B00A833FD /* MeshAnchorTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F126502BDF9A7B00A833FD /* MeshAnchorTracker.swift */; };
 		A7F126542BDF9B3100A833FD /* PostProcessing.metal in Sources */ = {isa = PBXBuildFile; fileRef = A7F126522BDF9B3100A833FD /* PostProcessing.metal */; };
 		A7F126552BDF9B3100A833FD /* PostProcessing.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F126532BDF9B3100A833FD /* PostProcessing.swift */; };
+		A7F126582BE0C9E500A833FD /* quill.usdz in Resources */ = {isa = PBXBuildFile; fileRef = A7F126562BE0C9E500A833FD /* quill.usdz */; };
+		A7F126592BE0C9E500A833FD /* wand.usdz in Resources */ = {isa = PBXBuildFile; fileRef = A7F126572BE0C9E500A833FD /* wand.usdz */; };
 		BFC3DA4F2BDBEE8D0090B36F /* SpeechToText.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC3DA4E2BDBEE8D0090B36F /* SpeechToText.swift */; };
 		BFC3DA522BDBEECA0090B36F /* SpellCastButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC3DA512BDBEECA0090B36F /* SpellCastButton.swift */; };
 		BFC3DA552BDBEF140090B36F /* ModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC3DA542BDBEF140090B36F /* ModalView.swift */; };
@@ -54,6 +56,8 @@
 		A7F126502BDF9A7B00A833FD /* MeshAnchorTracker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeshAnchorTracker.swift; sourceTree = "<group>"; };
 		A7F126522BDF9B3100A833FD /* PostProcessing.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = PostProcessing.metal; sourceTree = "<group>"; };
 		A7F126532BDF9B3100A833FD /* PostProcessing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostProcessing.swift; sourceTree = "<group>"; };
+		A7F126562BE0C9E500A833FD /* quill.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = quill.usdz; sourceTree = "<group>"; };
+		A7F126572BE0C9E500A833FD /* wand.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = wand.usdz; sourceTree = "<group>"; };
 		BFC3DA4E2BDBEE8D0090B36F /* SpeechToText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechToText.swift; sourceTree = "<group>"; };
 		BFC3DA512BDBEECA0090B36F /* SpellCastButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpellCastButton.swift; sourceTree = "<group>"; };
 		BFC3DA542BDBEF140090B36F /* ModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalView.swift; sourceTree = "<group>"; };
@@ -130,6 +134,8 @@
 		A7DA23152BD9F3B700C234BE /* USDZfile */ = {
 			isa = PBXGroup;
 			children = (
+				A7F126562BE0C9E500A833FD /* quill.usdz */,
+				A7F126572BE0C9E500A833FD /* wand.usdz */,
 				A76A45802BDE5D80004FC882 /* gramophone.usdz */,
 				A76A457F2BDE5D80004FC882 /* toy_car.usdz */,
 				A76A457D2BDE0DFC004FC882 /* feather.usda */,
@@ -214,8 +220,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A7F126592BE0C9E500A833FD /* wand.usdz in Resources */,
 				A7DA23142BD9F3B000C234BE /* plane.usdz in Resources */,
 				A76A457E2BDE0DFC004FC882 /* feather.usda in Resources */,
+				A7F126582BE0C9E500A833FD /* quill.usdz in Resources */,
 				A7DA23022BD91B6600C234BE /* Preview Assets.xcassets in Resources */,
 				A7DA22FF2BD91B6600C234BE /* Assets.xcassets in Resources */,
 				A7DA23132BD9F3B000C234BE /* drummer.usdz in Resources */,

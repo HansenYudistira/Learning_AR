@@ -51,6 +51,7 @@ struct SpellCastButton: View {
                 color = .gray
                 speechRecognizer.stopTranscribing()
                 speechText = speechRecognizer.transcript.lowercased()
+                print(speechText)
                 if speechText == "reset" {
                     speechAction = .remove
                 } else if speechText == "plane" {
