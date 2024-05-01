@@ -39,6 +39,8 @@ extension Entity {
 class CustomARView: ARView, ARSessionDelegate {
     var placedItem: Entity?
     var itemAnchor: AnchorEntity?
+    
+    var player: AVAudioPlayer!
 //    var meshAnchorTracker: MeshAnchorTracker?
 //
 //    var postProcessing: PostProcessing?
@@ -118,9 +120,31 @@ class CustomARView: ARView, ARSessionDelegate {
                     self?.dragItem(translation: translation)
                 case .pinchItem(magnitude: let magnitude):
                     self?.pinchItem(magnitude: magnitude)
+                case .playAudio(status: let status):
+                    self?.playAudio(status: status)
                 }
             }
             .store(in: &cancellables)
+    }
+    
+    func playAudio(status: String) {
+        let session = AVAudioSession.sharedInstance()
+        do {
+            try session.setCategory(.playAndRecord, mode: .default, options: [.defaultToSpeaker])
+            try session.setActive(true)
+        } catch {
+            print("Error setting up audio session:", error)
+        }
+        guard let url = Bundle.main.url(forResource: status, withExtension: "mp3") else {
+            fatalError("Failed to locate 'success.mp3' in bundle.")
+        }
+        print(url)
+        do {
+            self.player = try AVAudioPlayer(contentsOf: url)
+            player.play()
+        } catch {
+            print("Error initializing AVAudioPlayer:", error)
+        }
     }
     
 //    private func configureWorldTracking() {

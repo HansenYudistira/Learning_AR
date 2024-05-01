@@ -61,4 +61,5 @@ enum ARAction {
     case stopApplyingForce
     case translateItem(translation: CGSize)
     case pinchItem(magnitude: CGFloat)
+    case playAudio(status: String)
 }

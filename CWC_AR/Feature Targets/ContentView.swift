@@ -84,18 +84,22 @@ struct ContentView: View {
                     speechAction = .none
                     print("Remove all items")
                 } else if newValue == .plane{
+                    ARManager.shared.actionStream.send(.playAudio(status: "success"))
                     ARManager.shared.actionStream.send(.placeItem(item: "plane"))
                     speechAction = .none
                     print("Plane Added")
                 } else if newValue == .drummer{
+                    ARManager.shared.actionStream.send(.playAudio(status: "success"))
                     ARManager.shared.actionStream.send(.placeItem(item: "drummer"))
                     speechAction = .none
                     print("Drummer Added")
                 } else if newValue == .start{
+                    ARManager.shared.actionStream.send(.playAudio(status: "success"))
                     ARManager.shared.actionStream.send(.placeBall)
                     speechAction = .none
                     print("Feather Added")
                 } else if newValue == .ridikulus {
+                    ARManager.shared.actionStream.send(.playAudio(status: "success"))
                     let items = ["plane", "drummer", "gramophone", "toy_car"]
                     let randomNumber = Int(arc4random_uniform(UInt32(items.count)))
                     let randomItem = items[randomNumber]
@@ -103,17 +107,22 @@ struct ContentView: View {
                     speechAction = .none
                     print("Ridukulus spell casted")
                 } else if newValue == .leviosa {
+                    ARManager.shared.actionStream.send(.playAudio(status: "success"))
                     speechAction = .none
                     isDragable = true
                 } else if newValue == .lumos {
+                    ARManager.shared.actionStream.send(.playAudio(status: "success"))
                     layerColor = .clear
                     print("Lumos spell casted")
                     speechAction = .none
                 } else if newValue == .lumosmaxima {
+                    ARManager.shared.actionStream.send(.playAudio(status: "success"))
+                    layerColor = .clear
                     toggleFlashLight(on: true)
                     print("Lumos Maxima spell casted")
                     speechAction = .none
                 } else if newValue == .nox {
+                    ARManager.shared.actionStream.send(.playAudio(status: "success"))
                     toggleFlashLight(on: false)
                     print("Nox spell casted")
                     speechAction = .none

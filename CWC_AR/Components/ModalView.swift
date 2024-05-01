@@ -36,12 +36,12 @@ struct ModalView: View {
             speechText = speechRecognizer.transcript.lowercased()
             if speechText == "reset" {
                 speechAction = .remove
-            } else if speechText == "plane" {
-                speechAction = .plane
-            } else if speechText == "drummer" {
-                speechAction = .drummer
             } else if speechText == "start" {
                 speechAction = .start
+            } else if speechText.hasSuffix("drummer") {
+                speechAction = .drummer
+            } else if speechText.hasSuffix("plane") {
+                speechAction = .plane
             } else if speechText == "ridiculous" || speechText == "ridikulus" {
                 speechAction = .ridikulus
             } else if speechText == "wingardium leviosa!" {
