@@ -9,18 +9,51 @@ import ARKit
 import RealityKit
 import SwiftUI
 import Combine
+import CoreGraphics
+
+extension Entity {
+    func rotateAnimated(by rotation: simd_quatf, duration: TimeInterval) {
+        // Define the rotation transformation
+        let rotationTransform: Transform = Transform(rotation: rotation)
+        
+        // Animate the entity's rotation by applying the transformation over the specified duration
+        self.move(to: self.transform, relativeTo: self.parent)
+        self.move(to: rotationTransform, relativeTo: self.parent, duration: duration)
+    }
+}
+
+extension Entity {
+    
+    func scaleAnimated(with value: SIMD3<Float>, duration: CGFloat) {
+        
+        var scaleTransform: Transform = Transform()
+        scaleTransform.scale = value
+        self.move(to: self.transform, relativeTo: self.parent)
+        self.move(to: scaleTransform, relativeTo: self.parent, duration: duration)
+        
+    }
+    
+}
 
 
 class CustomARView: ARView, ARSessionDelegate {
     var placedItem: Entity?
+    var itemAnchor: AnchorEntity?
+    
+    var player: AVAudioPlayer!
+//    var meshAnchorTracker: MeshAnchorTracker?
+//
+//    var postProcessing: PostProcessing?
+    
+//    var arView: ARView { return self }
     
     required init(frame frameRect: CGRect) {
         super.init(frame: frameRect)
     }
     
-    func setup() {
-        MetalLibLoader.initializeMetal()
-    }
+//    func setup() {
+//        MetalLibLoader.initializeMetal()
+//    }
     
     func startApplyingForce(direction: Direction) {
         moveItem(direction: direction)
@@ -87,10 +120,56 @@ class CustomARView: ARView, ARSessionDelegate {
                     self?.dragItem(translation: translation)
                 case .pinchItem(magnitude: let magnitude):
                     self?.pinchItem(magnitude: magnitude)
+                case .playAudio(status: let status):
+                    self?.playAudio(status: status)
                 }
             }
             .store(in: &cancellables)
     }
+    
+    func playAudio(status: String) {
+        let session = AVAudioSession.sharedInstance()
+        do {
+            try session.setCategory(.playAndRecord, mode: .default, options: [.defaultToSpeaker])
+            try session.setActive(true)
+        } catch {
+            print("Error setting up audio session:", error)
+        }
+        guard let url = Bundle.main.url(forResource: status, withExtension: "mp3") else {
+            fatalError("Failed to locate 'success.mp3' in bundle.")
+        }
+        print(url)
+        do {
+            self.player = try AVAudioPlayer(contentsOf: url)
+            player.play()
+        } catch {
+            print("Error initializing AVAudioPlayer:", error)
+        }
+    }
+    
+//    private func configureWorldTracking() {
+//        let configuration = ARWorldTrackingConfiguration()
+//
+//        let sceneReconstruction: ARWorldTrackingConfiguration.SceneReconstruction = .mesh
+//        if ARWorldTrackingConfiguration.supportsSceneReconstruction(sceneReconstruction) {
+//            configuration.sceneReconstruction = sceneReconstruction
+//            meshAnchorTracker = .init(arView: self)
+//        }
+//
+//        let frameSemantics: ARConfiguration.FrameSemantics = [.smoothedSceneDepth, .sceneDepth]
+//        if ARWorldTrackingConfiguration.supportsFrameSemantics(frameSemantics) {
+//            configuration.frameSemantics.insert(frameSemantics)
+//            postProcessing = .init(arView: self)
+//        }
+//
+//        configuration.planeDetection.insert(.horizontal)
+//        session.run(configuration)
+//        defer { session.delegate = self }
+//
+//        arView.renderOptions.insert(.disableMotionBlur)
+//        arView.environment.sceneUnderstanding.options.insert([.collision, .physics, .receivesLighting, .occlusion])
+//    }
+
     
     func configurationExamples() {
         // Track the device relative to it's environment
@@ -177,27 +256,62 @@ class CustomARView: ARView, ARSessionDelegate {
     
     func placeItem(item: String) {
         if let existingEntity = placedItem {
-            // Retrieve the anchor of the existing entity
-            guard let existingAnchor = existingEntity.anchor else {
-                // If there's no anchor for the existing item (unlikely scenario), return
-                return
+            // Create a parent entity to hold both the existing and new entities
+            var _: Transform = Transform()
+            if existingEntity.scale.x == 1.0 {
+                existingEntity.scaleAnimated(with: [0.1, 0.1, 0.1], duration: 1.0)
+            } else {
+                existingEntity.scaleAnimated(with: [1.0, 1.0, 1.0], duration: 1.0)
             }
-            existingAnchor.removeChild(placedItem!)
-            
-            guard let entity = try? ModelEntity.load(named: item) else { return }
-            
-            // Add the new entity to the same anchor as the existing one
-            existingAnchor.addChild(entity)
-            
-            // Update the reference to the placed item
-            placedItem = entity
+                    
+            let parentEntity = Entity()
+            parentEntity.addChild(existingEntity)
+//                    let from = Transform.identity
+//                    let to = Transform(rotation: .init(angle: .pi * 2, axis: [0, 1, 0]))
+//                    let definition = FromToByAnimation(from: from,
+//                                                       to: to,
+//                                                       duration: 1,
+//                                                       timing: .easeInOut)
+//                    guard let rotationAnimation = try? AnimationResource.generate(with: definition) else {
+//                        print("Failed to create rotation animation")
+//                        return
+//                    }
+//
+//                    placedItem?.playAnimation(rotationAnimation, transitionDuration: 0.5, startsPaused: false)
+
+//                    // Wait for 1 second before adding the new entity
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [self] in
+                // Remove the existing entity from its parent
+                existingEntity.removeFromParent()
+
+                // Load the new entity
+                guard let newEntity = try? ModelEntity.load(named: item) else {
+                    // Failed to load the new entity
+                    return
+                }
+                
+                // Generate collision shapes for the new entity
+                newEntity.generateCollisionShapes(recursive: true)
+
+                // Add the new entity to the parent
+                parentEntity.addChild(newEntity)
+
+                // Update the reference to the placed item
+                placedItem = newEntity
+//                wandEntity.removeFromParent()
+            }
+            // Replace the existing entity with the parent entity in the anchor
+            itemAnchor!.addChild(parentEntity)
         } else {
             guard let entity = try? ModelEntity.load(named: item) else { return }
-            let planeAnchor = AnchorEntity(.plane(.horizontal, classification: .any, minimumBounds: .zero))
-            planeAnchor.addChild(entity)
-            scene.addAnchor(planeAnchor)
-            
+            entity.generateCollisionShapes(recursive: true)
             placedItem = entity
+            itemAnchor = AnchorEntity(.plane(.horizontal, classification: .any, minimumBounds: .zero))
+            
+            itemAnchor!.addChild(placedItem!)
+            scene.addAnchor(itemAnchor!)
+           
+            
         }
     }
     

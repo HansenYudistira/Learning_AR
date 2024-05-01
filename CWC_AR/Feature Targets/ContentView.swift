@@ -22,9 +22,6 @@ struct ContentView: View {
     @State private var isDragable: Bool = false
     @State private var layerColor: Color = .black
     
-    @State private var player: AVAudioPlayer?
-    @State private var soundName: String = ""
-            
     func toggleFlashLight(on: Bool) {
         guard let device = AVCaptureDevice.default(for: .video) else { return }
         if device.hasTorch {
@@ -38,18 +35,6 @@ struct ContentView: View {
             } catch {
                 print("Toggle torch error")
             }
-        }
-    }
-    
-    func playSound(sound: String) {
-        guard let soundURL = Bundle.main.url(forResource: sound, withExtension: "mp3") else { print("Sound not found")
-            return
-        }
-        do {
-            player = try AVAudioPlayer(contentsOf: soundURL)
-            player?.play()
-        } catch {
-            print("Failed to load the sound: \(error)")
         }
     }
     
@@ -99,40 +84,45 @@ struct ContentView: View {
                     speechAction = .none
                     print("Remove all items")
                 } else if newValue == .plane{
+                    ARManager.shared.actionStream.send(.playAudio(status: "success"))
                     ARManager.shared.actionStream.send(.placeItem(item: "plane"))
                     speechAction = .none
                     print("Plane Added")
                 } else if newValue == .drummer{
+                    ARManager.shared.actionStream.send(.playAudio(status: "success"))
                     ARManager.shared.actionStream.send(.placeItem(item: "drummer"))
                     speechAction = .none
                     print("Drummer Added")
                 } else if newValue == .start{
+                    ARManager.shared.actionStream.send(.playAudio(status: "success"))
                     ARManager.shared.actionStream.send(.placeBall)
                     speechAction = .none
                     print("Feather Added")
-                } else if newValue == .ridikulus{
-                    let items = ["plane", "drummer", "gramopphone", "toy_car"]
+                } else if newValue == .ridikulus {
+                    ARManager.shared.actionStream.send(.playAudio(status: "success"))
+                    let items = ["plane", "drummer", "gramophone", "toy_car"]
                     let randomNumber = Int(arc4random_uniform(UInt32(items.count)))
                     let randomItem = items[randomNumber]
                     ARManager.shared.actionStream.send(.placeItem(item: randomItem))
                     speechAction = .none
                     print("Ridukulus spell casted")
                 } else if newValue == .leviosa {
+                    ARManager.shared.actionStream.send(.playAudio(status: "success"))
                     speechAction = .none
                     isDragable = true
                 } else if newValue == .lumos {
-                    playSound(sound: "lumos.mp3")
+                    ARManager.shared.actionStream.send(.playAudio(status: "success"))
                     layerColor = .clear
                     print("Lumos spell casted")
                     speechAction = .none
                 } else if newValue == .lumosmaxima {
-                    playSound(sound: "lumos")
+                    ARManager.shared.actionStream.send(.playAudio(status: "success"))
                     layerColor = .clear
                     toggleFlashLight(on: true)
                     print("Lumos Maxima spell casted")
                     speechAction = .none
                 } else if newValue == .nox {
-                    playSound(sound: "lumos")
+                    ARManager.shared.actionStream.send(.playAudio(status: "success"))
                     toggleFlashLight(on: false)
                     print("Nox spell casted")
                     speechAction = .none
